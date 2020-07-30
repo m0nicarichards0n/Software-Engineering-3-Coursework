@@ -1,4 +1,5 @@
 ﻿using EustonLeisureMessaging.MessageTypes;
+using EustonLeisureMessaging.Services;
 using System;
 
 namespace EustonLeisureMessaging
@@ -16,7 +17,8 @@ namespace EustonLeisureMessaging
             switch (char.ToUpper(firstLetter))
             {
                 case 'S':
-                    return new SMS(id, body);
+                    TextSpeakService textSpeakService = TextSpeakService.GetInstance();
+                    return new SMS(id, body, textSpeakService);
                 case 'E':
                     return new Email(id, body);
                 case 'T':
