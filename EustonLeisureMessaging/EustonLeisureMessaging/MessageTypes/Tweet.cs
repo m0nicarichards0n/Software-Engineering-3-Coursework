@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using EustonLeisureMessaging.Services;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace EustonLeisureMessaging.MessageTypes
         private string _body;
         private string _sender;
         
-        public Tweet(string id, string body)
+        public Tweet(string id, string body, ITextSpeakService textSpeakService)
         {
             // Check ID character encoding is valid
             if (IsAsciiEncoding(id))
@@ -28,7 +29,7 @@ namespace EustonLeisureMessaging.MessageTypes
                         // Check ony 2 sections are identified
                         if (messageSections.Count() == 2)
                         {
-                            Body = messageSections[0];
+                            Body = textSpeakService.ExpandTextSpeakAbbreviations(messageSections[0]);
                             Sender = messageSections[1];
                         }
                         else

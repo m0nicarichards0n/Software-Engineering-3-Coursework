@@ -17,12 +17,11 @@ namespace EustonLeisureMessaging
             switch (char.ToUpper(firstLetter))
             {
                 case 'S':
-                    TextSpeakService textSpeakService = TextSpeakService.GetInstance();
-                    return new SMS(id, body, textSpeakService);
+                    return new SMS(id, body, TextSpeakService.GetInstance());
                 case 'E':
                     return new Email(id, body);
                 case 'T':
-                    return new Tweet(id, body);
+                    return new Tweet(id, body, TextSpeakService.GetInstance());
                 default:
                     throw new Exception("Unrecognised Message Type.");
             }
