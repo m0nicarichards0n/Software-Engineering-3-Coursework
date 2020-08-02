@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EustonLeisureMessaging.Services
 {
@@ -33,19 +35,20 @@ namespace EustonLeisureMessaging.Services
         }
         private bool ContainsTextSpeakAbbreviations(string message)
         {
-            bool containsAbbreviations = _abbreviations.Keys.Any(x => message.Contains(x));
+            bool containsAbbreviations = _abbreviations.Keys.Any(x => Regex.IsMatch(message, @"\b" + x + @"\b"));
             return containsAbbreviations;
         }
+
         public string ExpandTextSpeakAbbreviations(string message)
         {
             if (ContainsTextSpeakAbbreviations(message))
             {
-                string[] abbreviationsFound = _abbreviations.Keys.Where(x => message.Contains(x)).ToArray();
+                string[] abbreviationsFound = _abbreviations.Keys.Where(x => Regex.IsMatch(message, @"\b" + x + @"\b")).ToArray();
 
                 for (int i = 0; i < abbreviationsFound.Length; i++)
                 {
-                    string expandedAbbreviation = abbreviationsFound[i] + " <" + _abbreviations[abbreviationsFound[i]] + ">";
-                    message = message.Replace(abbreviationsFound[i], expandedAbbreviation);
+                    Regex regex = new Regex(@"\b" + abbreviationsFound[i] + @"\b");
+                    message = regex.Replace(message, abbreviationsFound[i] + " <" + _abbreviations[abbreviationsFound[i]] + ">");
                 }
 
                 return message;

@@ -6,8 +6,8 @@ namespace EustonLeisureMessaging.Services
     public class QuarantineUrlService : IQuarantineUrlService
     {
         private static QuarantineUrlService _instance;
-        private Regex urlRegex = new Regex(@"(https\:\/{2}|http\:\/{2}|www\.)(([a-zA-Z0-9-_~]+\.)+)([a-zA-Z0-9-_~]+)((\/[a-zA-Z0-9\.\-_~;\/?:@&=+$,]+)?)");
-        private List<Url> _quaratinedUrls;
+        private Regex _urlRegex = new Regex(@"(https\:\/{2}|http\:\/{2}|www\.)(([a-zA-Z0-9-_~]+\.)+)([a-zA-Z0-9-_~]+)((\/[a-zA-Z0-9\.\-_~;\/?:@&=+$,]+)?)");
+        private IDictionary<string,string> _quaratinedUrls;
 
         public static QuarantineUrlService GetInstance()
         {
@@ -20,35 +20,48 @@ namespace EustonLeisureMessaging.Services
 
         private QuarantineUrlService()
         {
-            _quaratinedUrls = new List<Url>();
+            _quaratinedUrls = new Dictionary<string,string>();
         }
 
         private bool ContainsUrls(string message)
         {
-            bool containsURLs = urlRegex.IsMatch(message);
+            bool containsURLs = _urlRegex.IsMatch(message);
             return containsURLs;
         }
 
         public string QuarantineURLs(string id, string message)
         {
-            string processedMessage = message;
             if (ContainsUrls(message))
             {
-                MatchCollection urls = urlRegex.Matches(message);
+                MatchCollection urls = _urlRegex.Matches(message);
                 
                 foreach(Match m in urls)
                 {
-                    Url newUrl = new Url();
-                    newUrl.SourceMessageId = id;
-                    newUrl.Path = m.ToString();
-                    _quaratinedUrls.Add(newUrl);
-                    processedMessage = processedMessage.Replace(m.ToString(), "<URL Quarantined>");
+                    if (!_quaratinedUrls.Keys.Contains(m.ToString()))
+                    {
+                        _quaratinedUrls.Add(m.ToString(), id);
+                    }
+                    else
+                    {
+                        string[] existingSourceIDs = _quaratinedUrls[m.ToString()].Split(',');
+                        for (int i = 0; i < existingSourceIDs.Length; i++)
+                        {
+                            if(existingSourceIDs[i] == id)
+                            {
+                                message = _urlRegex.Replace(message, "<URL Quarantined>");
+                                return message;
+                            }
+                        }
+                        _quaratinedUrls[m.ToString()] += "," + id;
+                    }
                 }
+
+                message = _urlRegex.Replace(message, "<URL Quarantined>");
             }
-            return processedMessage;
+            return message;
         }
 
-        public List<Url> GetQuarantinedUrls()
+        public IDictionary<string, string> GetQuarantinedUrls()
         {
             return _quaratinedUrls;
         }

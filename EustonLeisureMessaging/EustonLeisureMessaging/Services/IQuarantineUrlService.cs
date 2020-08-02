@@ -4,7 +4,7 @@ namespace EustonLeisureMessaging.Services
 {
     public interface IQuarantineUrlService
     {
-        List<Url> GetQuarantinedUrls();
+        IDictionary<string, string> GetQuarantinedUrls();
         string QuarantineURLs(string id, string message);
     }
 }

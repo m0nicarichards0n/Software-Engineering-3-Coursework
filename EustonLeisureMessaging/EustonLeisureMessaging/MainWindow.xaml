@@ -30,7 +30,7 @@
 
         <TabControl Grid.Column="1" >
             <!-- Messages Tab -->
-            <TabItem  Header="Messages">
+            <TabItem  Header="Message Dashboard">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -112,32 +112,146 @@
             <!-- URL Quarantine Tab -->
             <TabItem Header="URL Quarantine">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Quarantined URLs List -->
+                    <ListView x:Name="lstView_URLQuarantine" Grid.Row="0" ItemsSource="{Binding QuarantineUrls}" SelectionChanged="lstView_URLQuarantine_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Quarantined URLs"
+                            DisplayMemberBinding="{Binding Key}" Width="720" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <!-- URL Source Messages List -->
+                    <StackPanel Grid.Row="1">
+                        <Label x:Name="lbl_URLSources" Content="URL Sources" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke"  Width="740" Visibility="Hidden"></Label>
+                        <ListView x:Name="lstView_URLSourceMessages" Visibility="Hidden">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Message ID" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Id}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Sender" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Subject" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Body" Width="300">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!-- Twitter Activity Tab -->
+            <TabItem Header="Twitter Activity">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox x:Name="lst_URLQuarantine" HorizontalAlignment="Left" VerticalAlignment="Top" Height="400" Width="700" Margin="10,10,10,10" ItemsSource="{Binding Urls}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="3">
-                                    <DockPanel>
-                                        <TextBlock FontWeight="Bold" Text="Source Message ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                        <TextBlock Text="{Binding Path=SourceMessageId}"/>
-                                    </DockPanel>
-                                    <DockPanel>
-                                        <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                        <TextBlock TextWrapping="Wrap" Text="{Binding Path=Path}" />
-                                    </DockPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <!-- Trending List -->
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <Label Content="Trending List" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
+                        <ListView x:Name="lstView_TrendingList" ItemsSource="{Binding TrendingList}" SelectionChanged="lstView_TrendingList_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Hashtag"
+                                    DisplayMemberBinding="{Binding Key}" Width="250" />
+                                    <GridViewColumn Header="Mentions"
+                                    DisplayMemberBinding="{Binding Value}" Width="100"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <!-- Trending Source Messages-->
+                        <Label x:Name="lbl_TrendingSourceMessages" Content="" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke" Visibility="Hidden"></Label>
+                        <ListView x:Name="lstView_TrendingSourceMessages" Visibility="Hidden" ItemsSource="{Binding TrendingSourceMessages}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Id}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Message" Width="125">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="User" Width="125">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <!-- Mentions List -->
+                    <StackPanel Grid.Column="1" Grid.Row="0">
+                        <Label Content="Tweets Mentioning @EustonLeisure" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
+                        <ListView x:Name="lstView_MentionsList" ItemsSource="{Binding MentionsList}" SelectionChanged="lstView_TrendingList_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Id}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Message" Width="125">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="User" Width="125">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
-
-        
-        
-        
     </Grid>
 
 </Window>
