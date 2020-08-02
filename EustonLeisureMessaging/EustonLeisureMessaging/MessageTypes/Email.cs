@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using EustonLeisureMessaging.Services;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Net.Mail;
@@ -11,8 +12,8 @@ namespace EustonLeisureMessaging.MessageTypes
         private string _subject;
         private string _body;
         private string _sender;
-        
-        public Email (string id, string body)
+
+        public Email (string id, string body, IQuarantineUrlService quarantineUrlService)
         {
             // Check ID character encoding is valid
             if (IsAsciiEncoding(id))
@@ -31,7 +32,7 @@ namespace EustonLeisureMessaging.MessageTypes
                         if (messageSections.Count() == 3)
                         {
                             Subject = messageSections[0];
-                            Body = messageSections[1];
+                            Body = quarantineUrlService.QuarantineURLs(Id, messageSections[1]);
                             Sender = messageSections[2];
                         }
                         else

@@ -5,77 +5,139 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EustonLeisureMessaging"
         mc:Ignorable="d"
-        Title="Euston Leisure Messaging" Height="600" Width="1300">
+        Title="Euston Leisure Messaging" Height="500" Width="1000">
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="17*"/>
-            <RowDefinition Height="13*"/>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!-- Email List Box -->
-        <ListBox x:Name="lst_Emails" Height="200" Width="200" Margin="499,68,594.6,55.2" ItemsSource="{Binding Emails}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="3">
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="From:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                            <TextBlock Text="{Binding Path=Sender}"/>
-                        </DockPanel>
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="Subject:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                            <TextBlock Text="{Binding Path=Subject}" />
-                        </DockPanel>
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                            <TextBlock Text="{Binding Path=Body}" />
-                        </DockPanel>
+
+        <StackPanel Margin="10,10,10,10">
+            <Label Content="Send A Message..."  HorizontalAlignment="Center"/>
+            <TextBlock Foreground="Red" Visibility="Hidden" Padding="0" x:Name="txtBlock_ErrorMessage" TextWrapping="WrapWithOverflow"></TextBlock>
+            <Label Content="Header:" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+            <TextBox x:Name="txt_MessageHeader" TextWrapping="Wrap" Text="" Margin="10,0,10,0"/>
+            <Label Content="Body:"  HorizontalAlignment="Left" Margin="10,10,0,0"/>
+            <TextBox x:Name="txt_MessageBody" Height="125" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="10,0,10,0" Text=""/>
+            <Border Margin="10" CornerRadius="10" BorderBrush="SkyBlue" Background="SkyBlue" BorderThickness="2" Width="90">
+                <Button BorderThickness="0" Background="Transparent" x:Name="btn_Send" Click="btn_Send_Click" Content="Send" Width="88" Height="Auto"/>
+            </Border>
+        </StackPanel>
+
+        <TabControl Grid.Column="1" >
+            <!-- Messages Tab -->
+            <TabItem  Header="Messages">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Emails -->
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
+                        <Label Content="Emails" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
+                        <ListBox x:Name="lst_Emails" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Emails}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="3">
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="From:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="Subject:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                            <TextBlock Text="{Binding Path=Subject}" />
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
+                                        </DockPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <!-- SMS List Box -->
-        <ListBox x:Name="lst_SMS" HorizontalAlignment="Left" Height="200" Margin="744,68,0,0" VerticalAlignment="Top" Width="200" ItemsSource="{Binding SMSMessages}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="3">
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="Tel:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                            <TextBlock Text="{Binding Path=Sender}"/>
-                        </DockPanel>
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                            <TextBlock Text="{Binding Path=Body}" />
-                        </DockPanel>
+
+
+                    <!-- SMS Messages -->
+                    <StackPanel  Grid.Column="1" Grid.Row="0" Margin="10,10,10,10">
+                        <Label Content="Texts" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
+                        <ListBox x:Name="lst_SMS" Height="370" Width="220" HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding SMSMessages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="3">
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="Tel:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
+                                        </DockPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <!-- Tweets List Box -->
-        <ListBox x:Name="lst_Tweets" HorizontalAlignment="Left" Height="200" Margin="973,68,0,0" VerticalAlignment="Top" Width="200" ItemsSource="{Binding Tweets}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="3">
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="Twitter ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                            <TextBlock Text="{Binding Path=Sender}"/>
-                        </DockPanel>
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                            <TextBlock Text="{Binding Path=Body}" />
-                        </DockPanel>
+
+                    <!-- Tweets -->
+                    <StackPanel  Grid.Column="2" Grid.Row="0" Margin="10,10,10,10">
+                        <Label Content="Tweets" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
+                        <ListBox x:Name="lst_Tweets" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Tweets}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="3">
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="Twitter ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
+                                        </DockPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Label Content="Tweets:" HorizontalAlignment="Left" Margin="973,30,0,0" VerticalAlignment="Top" Width="200"/>
-        <Label Content="Texts:" HorizontalAlignment="Left" Margin="744,30,0,0" VerticalAlignment="Top" Width="200"/>
-        <Label Content="Emails:" HorizontalAlignment="Left" Margin="499,30,0,0" VerticalAlignment="Top" Width="200"/>
+                </Grid>
+            </TabItem>
+            <!-- URL Quarantine Tab -->
+            <TabItem Header="URL Quarantine">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ListBox x:Name="lst_URLQuarantine" HorizontalAlignment="Left" VerticalAlignment="Top" Height="400" Width="700" Margin="10,10,10,10" ItemsSource="{Binding Urls}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="3">
+                                    <DockPanel>
+                                        <TextBlock FontWeight="Bold" Text="Source Message ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                        <TextBlock Text="{Binding Path=SourceMessageId}"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding Path=Path}" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
         
-        <TextBox x:Name="txt_MessageHeader" HorizontalAlignment="Left" Height="23" Margin="88,123,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="344"/>
-        <TextBox x:Name="txt_MessageBody" HorizontalAlignment="Left" Height="132" Margin="88,151,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="344"/>
-        <Label Content="Send A Message:" HorizontalAlignment="Left" Margin="88,30,0,0" VerticalAlignment="Top" Width="344"/>
-        <Button x:Name="btn_Send" Click="btn_Send_Click" Content="Send" HorizontalAlignment="Left" Margin="88,288,0,0" VerticalAlignment="Top" Width="88" Height="25"/>
-        <Label Padding="5" Foreground="Red" HorizontalAlignment="Left" Margin="88,68,0,0" VerticalAlignment="Top" Height="50" Width="344">
-            <TextBlock x:Name="txtBlock_ErrorMessage" TextWrapping="WrapWithOverflow"></TextBlock>
-        </Label>
+        
+        
     </Grid>
+
 </Window>

@@ -19,7 +19,7 @@ namespace EustonLeisureMessaging
                 case 'S':
                     return new SMS(id, body, TextSpeakService.GetInstance());
                 case 'E':
-                    return new Email(id, body);
+                    return new Email(id, body, QuarantineUrlService.GetInstance());
                 case 'T':
                     return new Tweet(id, body, TextSpeakService.GetInstance());
                 default:

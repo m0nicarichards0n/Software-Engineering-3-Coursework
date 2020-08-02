@@ -66,8 +66,11 @@
     <Compile Include="MessageFactory.cs" />
     <Compile Include="MessageTypes\SMS.cs" />
     <Compile Include="MessageTypes\Tweet.cs" />
+    <Compile Include="Services\IQuarantineUrlService.cs" />
     <Compile Include="Services\ITextSpeakService.cs" />
+    <Compile Include="Services\QuarantineUrlService.cs" />
     <Compile Include="Services\TextSpeakService.cs" />
+    <Compile Include="Url.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
