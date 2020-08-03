@@ -11,7 +11,7 @@ namespace EustonLeisureMessaging.MessageTypes
         private string _body;
         private string _sender;
         
-        public Tweet(string id, string body, ITextSpeakService textSpeakService, ITrendingHashtagService trendingHashtagService)
+        public Tweet(string id, string body, ITextSpeakService textSpeakService, ITwitterMonitoringService twitterMonitoringService)
         {
             // Check ID character encoding is valid
             if (IsAsciiEncoding(id))
@@ -30,7 +30,7 @@ namespace EustonLeisureMessaging.MessageTypes
                         if (messageSections.Count() == 2)
                         {
                             Body = textSpeakService.ExpandTextSpeakAbbreviations(messageSections[0]);
-                            trendingHashtagService.CountHashtags(Body);
+                            twitterMonitoringService.CountHashtags(Body);
                             Sender = messageSections[1];
                         }
                         else

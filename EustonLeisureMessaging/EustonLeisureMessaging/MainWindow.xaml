@@ -127,7 +127,7 @@
                     </ListView>
                     <!-- URL Source Messages List -->
                     <StackPanel Grid.Row="1">
-                        <Label x:Name="lbl_URLSources" Content="URL Sources" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke"  Width="740" Visibility="Hidden"></Label>
+                        <Label x:Name="lbl_URLSources" Content="URL Sources" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" Width="740" Visibility="Hidden"></Label>
                         <ListView x:Name="lstView_URLSourceMessages" Visibility="Hidden">
                             <ListView.View>
                                 <GridView>
@@ -221,7 +221,7 @@
                     <!-- Mentions List -->
                     <StackPanel Grid.Column="1" Grid.Row="0">
                         <Label Content="Tweets Mentioning @EustonLeisure" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
-                        <ListView x:Name="lstView_MentionsList" ItemsSource="{Binding MentionsList}" SelectionChanged="lstView_TrendingList_SelectionChanged">
+                        <ListView x:Name="lstView_MentionsList" ItemsSource="{Binding MentionsList}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Id" Width="100">

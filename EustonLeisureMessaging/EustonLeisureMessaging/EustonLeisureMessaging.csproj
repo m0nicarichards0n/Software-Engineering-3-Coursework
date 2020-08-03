@@ -68,10 +68,10 @@
     <Compile Include="MessageTypes\Tweet.cs" />
     <Compile Include="Services\IQuarantineUrlService.cs" />
     <Compile Include="Services\ITextSpeakService.cs" />
-    <Compile Include="Services\ITrendingHashtagService.cs" />
+    <Compile Include="Services\ITwitterMonitoringService.cs" />
     <Compile Include="Services\QuarantineUrlService.cs" />
     <Compile Include="Services\TextSpeakService.cs" />
-    <Compile Include="Services\TrendingHashtagService.cs" />
+    <Compile Include="Services\TwitterMonitoringService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

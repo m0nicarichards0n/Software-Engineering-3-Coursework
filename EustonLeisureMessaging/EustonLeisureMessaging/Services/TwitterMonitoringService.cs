@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace EustonLeisureMessaging.Services
 {
-    public class TrendingHashtagService : ITrendingHashtagService
+    public class TwitterMonitoringService : ITwitterMonitoringService
     {
-        private static TrendingHashtagService _instance;
+        private static TwitterMonitoringService _instance;
         private Regex _hashtagRegex = new Regex(@"(\#[a-zA-Z0-9]+)");
         private IDictionary<string, int> _trendingList;
 
-        public static TrendingHashtagService GetInstance()
+        public static TwitterMonitoringService GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new TrendingHashtagService();
+                _instance = new TwitterMonitoringService();
             }
             return _instance;
         }
 
-        private TrendingHashtagService()
+        private TwitterMonitoringService()
         {
             _trendingList = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         }
@@ -55,6 +55,12 @@ namespace EustonLeisureMessaging.Services
         public IDictionary<string, int> GetTrendingList()
         {
             return _trendingList;
+        }
+        
+        public bool ContainsMention(string username, string message)
+        {
+            bool mentionsUsername = Regex.IsMatch(message, @"(?i)\@" + username + @"\b");
+            return mentionsUsername;
         }
     }
 }

@@ -23,27 +23,30 @@ namespace EustonLeisureMessaging
         private List<JObject> MessagesAsJson;
         private IDictionary<string, string> QuarantinedUrls;
         private IDictionary<string, int> TrendingList;
+        private List<Tweet> MentionsList;
         private IQuarantineUrlService _quarantinedUrlService = QuarantineUrlService.GetInstance();
-        private ITrendingHashtagService _trendingHashtagService = TrendingHashtagService.GetInstance();
+        private ITwitterMonitoringService _twitterMonitoringService = TwitterMonitoringService.GetInstance();
+        private static readonly string _username = "EustonLeisure";
 
         public MainWindow()
         {
             QuarantinedUrls = _quarantinedUrlService.GetQuarantinedUrls();
-            TrendingList = _trendingHashtagService.GetTrendingList();
-
+            TrendingList = _twitterMonitoringService.GetTrendingList();
+            
             InitializeComponent();
             
             Emails = new List<Email>();
             Tweets = new List<Tweet>();
             SMSMessages = new List<SMS>();
             MessagesAsJson = new List<JObject>();
-            
+            MentionsList = new List<Tweet>();
 
             lst_Emails.ItemsSource = Emails;
             lst_Tweets.ItemsSource = Tweets;
             lst_SMS.ItemsSource = SMSMessages;
             lstView_URLQuarantine.ItemsSource = QuarantinedUrls;
             lstView_TrendingList.ItemsSource = TrendingList;
+            lstView_MentionsList.ItemsSource = MentionsList;
 
             CollectionView trendingListView = (CollectionView)CollectionViewSource.GetDefaultView(lstView_TrendingList.ItemsSource);
             trendingListView.SortDescriptions.Add(new SortDescription("Value", ListSortDirection.Descending));
@@ -86,7 +89,6 @@ namespace EustonLeisureMessaging
                 txtBlock_ErrorMessage.Text = exception.Message;
             }
         }
-
         private void CategoriseMessage(IMessage message)
         {
             Type messageType = message.GetType();
@@ -100,8 +102,16 @@ namespace EustonLeisureMessaging
             {
                 Tweets.Add((Tweet)message);
                 lst_Tweets.Items.Refresh();
+
                 lstView_TrendingList.Items.Refresh();
                 lstView_TrendingList.SelectedItems.Clear();
+                lstView_MentionsList.Items.Refresh();
+
+                if (_twitterMonitoringService.ContainsMention(_username, message.Body))
+                {
+                    MentionsList.Add((Tweet)message);
+                }
+                lstView_MentionsList.Items.Refresh();
             }
             else if (messageType == typeof(SMS))
             {
