@@ -66,12 +66,14 @@
     <Compile Include="MessageFactory.cs" />
     <Compile Include="MessageTypes\SMS.cs" />
     <Compile Include="MessageTypes\Tweet.cs" />
+    <Compile Include="Services\IMentionMonitoringService.cs" />
     <Compile Include="Services\IQuarantineUrlService.cs" />
     <Compile Include="Services\ITextSpeakService.cs" />
-    <Compile Include="Services\ITwitterMonitoringService.cs" />
+    <Compile Include="Services\IHashtagMonitoringService.cs" />
+    <Compile Include="Services\MentionMonitoringService.cs" />
     <Compile Include="Services\QuarantineUrlService.cs" />
     <Compile Include="Services\TextSpeakService.cs" />
-    <Compile Include="Services\TwitterMonitoringService.cs" />
+    <Compile Include="Services\HashtagMonitoringService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

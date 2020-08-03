@@ -25,13 +25,14 @@ namespace EustonLeisureMessaging
         private IDictionary<string, int> TrendingList;
         private List<Tweet> MentionsList;
         private IQuarantineUrlService _quarantinedUrlService = QuarantineUrlService.GetInstance();
-        private ITwitterMonitoringService _twitterMonitoringService = TwitterMonitoringService.GetInstance();
+        private IHashtagMonitoringService _hashtagMonitoringService = HashtagMonitoringService.GetInstance();
+        private IMentionMonitoringService _mentionMonitoringService = MentionMonitoringService.GetInstance();
         private static readonly string _username = "EustonLeisure";
 
         public MainWindow()
         {
             QuarantinedUrls = _quarantinedUrlService.GetQuarantinedUrls();
-            TrendingList = _twitterMonitoringService.GetTrendingList();
+            TrendingList = _hashtagMonitoringService.GetTrendingList();
             
             InitializeComponent();
             
@@ -107,7 +108,7 @@ namespace EustonLeisureMessaging
                 lstView_TrendingList.SelectedItems.Clear();
                 lstView_MentionsList.Items.Refresh();
 
-                if (_twitterMonitoringService.ContainsMention(_username, message.Body))
+                if (_mentionMonitoringService.ContainsMention(_username, message.Body))
                 {
                     MentionsList.Add((Tweet)message);
                 }

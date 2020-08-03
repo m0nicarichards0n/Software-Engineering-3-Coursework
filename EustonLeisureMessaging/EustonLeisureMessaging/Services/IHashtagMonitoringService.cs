@@ -2,10 +2,9 @@
 
 namespace EustonLeisureMessaging.Services
 {
-    public interface ITwitterMonitoringService
+    public interface IHashtagMonitoringService
     {
         void CountHashtags(string message);
         IDictionary<string, int> GetTrendingList();
-        bool ContainsMention(string username, string message);
     }
 }

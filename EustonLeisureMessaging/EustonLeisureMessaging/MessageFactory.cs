@@ -21,7 +21,7 @@ namespace EustonLeisureMessaging
                 case 'E':
                     return new Email(id, body, QuarantineUrlService.GetInstance());
                 case 'T':
-                    return new Tweet(id, body, TextSpeakService.GetInstance(), TwitterMonitoringService.GetInstance());
+                    return new Tweet(id, body, TextSpeakService.GetInstance(), HashtagMonitoringService.GetInstance());
                 default:
                     throw new Exception("Unrecognised Message Type.");
             }
