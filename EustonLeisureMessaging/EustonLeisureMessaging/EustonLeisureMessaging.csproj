@@ -64,6 +64,7 @@
     <Compile Include="MessageTypes\Email.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="MessageFactory.cs" />
+    <Compile Include="MessageTypes\SignificantIncidentReport.cs" />
     <Compile Include="MessageTypes\SMS.cs" />
     <Compile Include="MessageTypes\Tweet.cs" />
     <Compile Include="Services\IMentionMonitoringService.cs" />
@@ -110,6 +111,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SignificantIncidentTypes.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="textwords.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

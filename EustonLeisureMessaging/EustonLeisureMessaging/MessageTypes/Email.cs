@@ -13,47 +13,12 @@ namespace EustonLeisureMessaging.MessageTypes
         private string _body;
         private string _sender;
 
-        public Email (string id, string body, IQuarantineUrlService quarantineUrlService)
+        public Email(string id, string subject, string body, string sender, IQuarantineUrlService quarantineUrlService)
         {
-            // Check ID character encoding is valid
-            if (IsAsciiEncoding(id))
-            {
-                Id = id;
-                // Check message body character encoding is valid
-                if (IsAsciiEncoding(body))
-                {
-                    // Check there are exactly 6 double quotes in the message body
-                    if (body.Count(x => x == '"') == 6)
-                    {
-                        // Get each section in double quotes from message body
-                        string[] messageSections = GetMessageSections(body);
-
-                        // Check ony 3 sections are identified
-                        if (messageSections.Count() == 3)
-                        {
-                            Subject = messageSections[0];
-                            Body = quarantineUrlService.QuarantineURLs(Id, messageSections[1]);
-                            Sender = messageSections[2];
-                        }
-                        else
-                        {
-                            throw new Exception("Invalid message format - your email must contain a subject, message and email address in the format \"{subject}\" \"{message}\" \"{email address}\"");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid message format - your email must contain a subject, message and email address in the format \"{subject}\" \"{message}\" \"{email address}\"");
-                    }
-                }
-                else
-                {
-                    throw new Exception("Message Body contains unsupported characters.");
-                }
-            }
-            else
-            {
-                throw new Exception("Message ID contains unsupported characters.");
-            }
+            Id = id;
+            Subject = subject;
+            Body = quarantineUrlService.QuarantineURLs(Id, body);
+            Sender = sender;
         }
         public string Id
         {
@@ -88,7 +53,7 @@ namespace EustonLeisureMessaging.MessageTypes
                 }
             }
         }
-        public string Subject
+        public virtual string Subject
         {
             get { return _subject; }
             set

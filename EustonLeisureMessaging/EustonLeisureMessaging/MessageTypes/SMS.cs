@@ -11,46 +11,11 @@ namespace EustonLeisureMessaging.MessageTypes
         private string _body;
         private string _sender;
         
-        public SMS (string id, string body, ITextSpeakService textSpeakService)
+        public SMS (string id, string body, string sender, ITextSpeakService textSpeakService)
         {
-            // Check ID character encoding is valid
-            if (IsAsciiEncoding(id))
-            {
-                Id = id;
-                // Check message body character encoding is valid
-                if (IsAsciiEncoding(body))
-                {
-                    // Check there are exactly 4 double quotes in the message body
-                    if (body.Count(x => x == '"') == 4)
-                    {
-                        // Get each section in double quotes from message body
-                        string[] messageSections = GetMessageSections(body);
-
-                        // Check ony 2 sections are identified
-                        if (messageSections.Count() == 2)
-                        {
-                            Body = textSpeakService.ExpandTextSpeakAbbreviations(messageSections[0]);
-                            Sender = messageSections[1];
-                        }
-                        else
-                        {
-                            throw new Exception("Invalid message format - your text must contain a message and a phone number in the format \"{message}\" \"{phone number}\"");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid message format - your text must contain a message and a phone number in the format \"{message}\" \"{phone number}\"");
-                    }
-                }
-                else
-                {
-                    throw new Exception("Message Body contains unsupported characters.");
-                }
-            }
-            else
-            {
-                throw new Exception("Message ID contains unsupported characters.");
-            }
+            Id = id;
+            Body = textSpeakService.ExpandTextSpeakAbbreviations(body);
+            Sender = sender;
         }
         public string Id
         {

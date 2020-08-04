@@ -18,6 +18,7 @@ namespace EustonLeisureMessaging
     public partial class MainWindow : Window
     {
         private List<Email> Emails;
+        private List<SignificantIncidentReport> SignificantIncidentReports;
         private List<Tweet> Tweets;
         private List<SMS> SMSMessages;
         private List<JObject> MessagesAsJson;
@@ -37,6 +38,7 @@ namespace EustonLeisureMessaging
             InitializeComponent();
             
             Emails = new List<Email>();
+            SignificantIncidentReports = new List<SignificantIncidentReport>();
             Tweets = new List<Tweet>();
             SMSMessages = new List<SMS>();
             MessagesAsJson = new List<JObject>();
@@ -99,6 +101,10 @@ namespace EustonLeisureMessaging
                 lst_Emails.Items.Refresh();
                 lstView_URLQuarantine.Items.Refresh();
             }
+            else if (messageType == typeof(SignificantIncidentReport))
+            {
+                SignificantIncidentReports.Add((SignificantIncidentReport)message);
+            }
             else if (messageType == typeof(Tweet))
             {
                 Tweets.Add((Tweet)message);
@@ -135,8 +141,16 @@ namespace EustonLeisureMessaging
 
                 for (int i = 0; i < messageSourceIds.Length; i++)
                 {
-                    Email sourceMessage = Emails.Find(x => x.Id == messageSourceIds[i]);
-                    lstView_URLSourceMessages.Items.Add(sourceMessage);
+                    Email sourceEmail = Emails.Find(x => x.Id == messageSourceIds[i]);
+                    if (sourceEmail == null)
+                    {
+                        SignificantIncidentReport sourceSIR = SignificantIncidentReports.Find(x => x.Id == messageSourceIds[i]);
+                        lstView_URLSourceMessages.Items.Add(sourceSIR);
+                    }
+                    else
+                    {
+                        lstView_URLSourceMessages.Items.Add(sourceEmail);
+                    }
                 }
             }
             else
