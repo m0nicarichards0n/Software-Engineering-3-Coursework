@@ -67,18 +67,18 @@
     <Compile Include="MessageTypes\SignificantIncidentReport.cs" />
     <Compile Include="MessageTypes\SMS.cs" />
     <Compile Include="MessageTypes\Tweet.cs" />
-    <Compile Include="Services\IMentionMonitoringService.cs" />
-    <Compile Include="Services\IQuarantineUrlService.cs" />
-    <Compile Include="Services\ISignificantIncidentService.cs" />
-    <Compile Include="Services\ITextSpeakService.cs" />
-    <Compile Include="Services\IHashtagMonitoringService.cs" />
-    <Compile Include="Services\IValidationService.cs" />
-    <Compile Include="Services\MentionMonitoringService.cs" />
-    <Compile Include="Services\QuarantineUrlService.cs" />
-    <Compile Include="Services\SignificantIncidentService.cs" />
-    <Compile Include="Services\TextSpeakService.cs" />
-    <Compile Include="Services\HashtagMonitoringService.cs" />
-    <Compile Include="Services\ValidationService.cs" />
+    <Compile Include="Services\MentionMonitoring\IMentionMonitoringService.cs" />
+    <Compile Include="Services\QuarantineURL\IQuarantineUrlService.cs" />
+    <Compile Include="Services\SignificantIncident\ISignificantIncidentService.cs" />
+    <Compile Include="Services\TextSpeak\ITextSpeakService.cs" />
+    <Compile Include="Services\HashtagMonitoring\IHashtagMonitoringService.cs" />
+    <Compile Include="Services\Validation\IValidationService.cs" />
+    <Compile Include="Services\MentionMonitoring\MentionMonitoringService.cs" />
+    <Compile Include="Services\QuarantineURL\QuarantineUrlService.cs" />
+    <Compile Include="Services\SignificantIncident\SignificantIncidentService.cs" />
+    <Compile Include="Services\TextSpeak\TextSpeakService.cs" />
+    <Compile Include="Services\HashtagMonitoring\HashtagMonitoringService.cs" />
+    <Compile Include="Services\Validation\ValidationService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,5 +126,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
