@@ -50,6 +50,7 @@ namespace EustonLeisureMessaging
             lstView_URLQuarantine.ItemsSource = QuarantinedUrls;
             lstView_TrendingList.ItemsSource = TrendingList;
             lstView_MentionsList.ItemsSource = MentionsList;
+            lstView_SIRList.ItemsSource = SignificantIncidentReports;
 
             CollectionView trendingListView = (CollectionView)CollectionViewSource.GetDefaultView(lstView_TrendingList.ItemsSource);
             trendingListView.SortDescriptions.Add(new SortDescription("Value", ListSortDirection.Descending));
@@ -104,6 +105,8 @@ namespace EustonLeisureMessaging
             else if (messageType == typeof(SignificantIncidentReport))
             {
                 SignificantIncidentReports.Add((SignificantIncidentReport)message);
+                lstView_SIRList.Items.Refresh();
+                DisplaySignificantIncidents();
             }
             else if (messageType == typeof(Tweet))
             {
@@ -183,6 +186,18 @@ namespace EustonLeisureMessaging
             {
                 lbl_TrendingSourceMessages.Visibility = Visibility.Hidden;
                 lstView_TrendingSourceMessages.Visibility = Visibility.Hidden;
+            }
+        }
+        
+        public void DisplaySignificantIncidents()
+        {
+            if (SignificantIncidentReports.Count > 0)
+            {
+                lst_Emails.Height = 160;
+                lst_SMS.Height = 160;
+                lst_Tweets.Height = 160;
+
+                stackPanel_SIR.Visibility = Visibility.Visible;
             }
         }
     }

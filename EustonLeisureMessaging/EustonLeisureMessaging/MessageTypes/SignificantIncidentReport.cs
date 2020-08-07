@@ -7,7 +7,7 @@ namespace EustonLeisureMessaging.MessageTypes
 {
     public class SignificantIncidentReport : Email
     {
-        private DateTime _date;
+        private string _date;
         private string _subject;
         private string _sportCentreCode;
         private string _natureOfIncident;
@@ -25,7 +25,7 @@ namespace EustonLeisureMessaging.MessageTypes
             NatureOfIncident = significantIncidentService.GetNatureOfIncident(Id, Body);
         }
 
-        public DateTime Date
+        public string Date
         {
             get { return _date; }
             set { _date = value; }
@@ -48,9 +48,9 @@ namespace EustonLeisureMessaging.MessageTypes
             set { _natureOfIncident = value; }
         }
 
-        private DateTime GetDate(string subject)
+        private string GetDate(string subject)
         {
-            DateTime date = DateTime.ParseExact(subject.Substring(4, 8), "dd/MM/yy", CultureInfo.InvariantCulture);
+            string date = subject.Substring(4, 8);
             return date;
         }
 

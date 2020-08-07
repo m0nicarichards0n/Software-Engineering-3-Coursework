@@ -31,83 +31,142 @@
         <TabControl Grid.Column="1" >
             <!-- Messages Tab -->
             <TabItem  Header="Message Dashboard">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <!-- Emails -->
-                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="10,10,10,10">
-                        <Label Content="Emails" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
-                        <ListBox x:Name="lst_Emails" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Emails}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="3">
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="From:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="Subject:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                            <TextBlock Text="{Binding Path=Subject}" />
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
-                                        </DockPanel>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <!-- Emails -->
+                        <StackPanel Grid.Column="0" Margin="10,10,10,10">
+                            <Label Content="Emails" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
+                            <ListBox x:Name="lst_Emails" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Emails}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="3">
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="From:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="Subject:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                                <TextBlock Text="{Binding Path=Subject}" />
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
 
 
-                    <!-- SMS Messages -->
-                    <StackPanel  Grid.Column="1" Grid.Row="0" Margin="10,10,10,10">
-                        <Label Content="Texts" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
-                        <ListBox x:Name="lst_SMS" Height="370" Width="220" HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding SMSMessages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="3">
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="Tel:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
-                                        </DockPanel>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>
+                        <!-- SMS Messages -->
+                        <StackPanel  Grid.Column="1" Margin="10,10,10,10">
+                            <Label Content="Texts" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
+                            <ListBox x:Name="lst_SMS" Height="370" Width="220" HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding SMSMessages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="3">
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="Tel:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
 
-                    <!-- Tweets -->
-                    <StackPanel  Grid.Column="2" Grid.Row="0" Margin="10,10,10,10">
-                        <Label Content="Tweets" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
-                        <ListBox x:Name="lst_Tweets" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Tweets}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="3">
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="Twitter ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                            <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
-                                        </DockPanel>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <!-- Tweets -->
+                        <StackPanel  Grid.Column="2" Margin="10,10,10,10">
+                            <Label Content="Tweets" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
+                            <ListBox x:Name="lst_Tweets" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Tweets}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="3">
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="Twitter ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
+                                            </DockPanel>
+                                            <DockPanel>
+                                                <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <!-- Significant Incident Reports -->
+                    <StackPanel x:Name="stackPanel_SIR" Visibility="Hidden">
+                        <Label Content="Significant Incident Reports" HorizontalAlignment="Center" Width="740" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
+                        <ListView x:Name="lstView_SIRList" Height="170" Width="740" ItemsSource="{Binding SignificantIncidentReports}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Id" Width="90">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Id}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Date" Width="70">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Date}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Subject" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Sport Centre Code" Width="110">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding SportCentreCode}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Nature of Incident" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding NatureOfIncident}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Notes" Width="125">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="From" Width="125">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                     </StackPanel>
-                </Grid>
+                </StackPanel>
             </TabItem>
             <!-- URL Quarantine Tab -->
             <TabItem Header="URL Quarantine">
