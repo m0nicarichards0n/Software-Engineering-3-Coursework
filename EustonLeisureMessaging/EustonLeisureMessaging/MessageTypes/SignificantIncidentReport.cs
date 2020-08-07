@@ -1,12 +1,7 @@
 ﻿using EustonLeisureMessaging.Services;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace EustonLeisureMessaging.MessageTypes
 {
@@ -16,26 +11,24 @@ namespace EustonLeisureMessaging.MessageTypes
         private string _subject;
         private string _sportCentreCode;
         private string _natureOfIncident;
-        private static readonly List<string> _incidentTypes = new List<string>();
 
-        public SignificantIncidentReport (string id, DateTime date, string subject, string body, string sender, IQuarantineUrlService quarantineUrlService) : base (id, subject, body, sender, quarantineUrlService)
+        public SignificantIncidentReport (string id, string subject, string body, string sender, 
+                                            IQuarantineUrlService quarantineUrlService, 
+                                            ISignificantIncidentService significantIncidentService) : base (id, subject, body, sender, quarantineUrlService)
         {
-            using (var reader = new StreamReader("SignificantIncidentTypes.csv"))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine();
-                    _incidentTypes.Add(line);
-                }
-            }
-            
             Id = id;
+            Date = GetDate(subject);
             Subject = subject;
             Body = quarantineUrlService.QuarantineURLs(Id, body);
             Sender = sender;
-            _sportCentreCode = GetSportCentreCode(Body);
-            _natureOfIncident = GetNatureOfIncident(Body);
-            _date = date;
+            SportCentreCode = significantIncidentService.GetSportCentreCode(Id, Body);
+            NatureOfIncident = significantIncidentService.GetNatureOfIncident(Id, Body);
+        }
+
+        public DateTime Date
+        {
+            get { return _date; }
+            set { _date = value; }
         }
 
         public override string Subject
@@ -44,30 +37,36 @@ namespace EustonLeisureMessaging.MessageTypes
             set { _subject = value; }
         }
 
-        private string GetSportCentreCode(string body)
+        public string SportCentreCode
         {
-            Regex sportCentreRegex = new Regex(@"(?<=\ASport\sCentre\sCode:\s)([0-9]{2}\-[0-9]{3}\-[0-9]{2})");
-            if (sportCentreRegex.IsMatch(body))
-            {
-                return sportCentreRegex.Match(body).ToString();
-            }
-            else
-            {
-                throw new Exception("Error in message " + Id + ": Significant Incident Report does not specify a valid Sport Centre Code.");
-            }
+            get { return _sportCentreCode; }
+            set { _sportCentreCode = value; }
         }
-        
-        private string GetNatureOfIncident(string body)
+        public string NatureOfIncident
         {
-            Regex incidentRegex = new Regex(@"(?<=Nature\sof\sIncident:\s)([a-zA-Z ]+),");
-            if (incidentRegex.IsMatch(body) && _incidentTypes.Contains(incidentRegex.Match(body).ToString().TrimEnd(',')))
-            {
-                return incidentRegex.Match(body).ToString().TrimEnd(',');
-            }
-            else
-            {
-                throw new Exception("Error in message " + Id + ": Significant Incident Report does not specify a valid incident type.");
-            }
+            get { return _natureOfIncident; }
+            set { _natureOfIncident = value; }
+        }
+
+        private DateTime GetDate(string subject)
+        {
+            DateTime date = DateTime.ParseExact(subject.Substring(4, 8), "dd/MM/yy", CultureInfo.InvariantCulture);
+            return date;
+        }
+
+        public override JObject GetMessageAsJObject()
+        {
+            JObject output = new JObject(
+                            new JProperty("Type", "SignificantIncidentReport"),
+                            new JProperty("Id", Id),
+                            new JProperty("Date", Date),
+                            new JProperty("Subject", Subject),
+                            new JProperty("SportCentreCode", SportCentreCode),
+                            new JProperty("NatureOfIncident", NatureOfIncident),
+                            new JProperty("Body", Body),
+                            new JProperty("Sender", Sender));
+
+            return output;
         }
     }
 }

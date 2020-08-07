@@ -102,7 +102,7 @@ namespace EustonLeisureMessaging.MessageTypes
             }
         }
 
-        public JObject GetMessageAsJObject()
+        public virtual JObject GetMessageAsJObject()
         {
             JObject output = new JObject(
                             new JProperty("Type", "Email"),

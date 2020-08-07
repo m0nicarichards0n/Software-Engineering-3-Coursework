@@ -75,7 +75,7 @@ namespace EustonLeisureMessaging
                     string messageHeader = txt_MessageHeader.Text;
                     string messageBody = txt_MessageBody.Text;
 
-                    var newMessage = MessageFactory.CreateMessage(messageHeader, messageBody);
+                    var newMessage = MessageFactory.CreateMessage(messageHeader, messageBody, ValidationService.GetInstance());
                     MessagesAsJson.Add(newMessage.GetMessageAsJObject());
 
                     CategoriseMessage(newMessage);
