@@ -1,7 +1,5 @@
 ﻿using EustonLeisureMessaging.Services;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Globalization;
 
 namespace EustonLeisureMessaging.MessageTypes
 {
@@ -19,10 +17,10 @@ namespace EustonLeisureMessaging.MessageTypes
             Id = id;
             Date = GetDate(subject);
             Subject = subject;
-            Body = quarantineUrlService.QuarantineURLs(Id, body);
+            Body = significantIncidentService.GetMessageBody(quarantineUrlService.QuarantineURLs(Id, body));
             Sender = sender;
-            SportCentreCode = significantIncidentService.GetSportCentreCode(Id, Body);
-            NatureOfIncident = significantIncidentService.GetNatureOfIncident(Id, Body);
+            SportCentreCode = significantIncidentService.GetSportCentreCode(Id, body);
+            NatureOfIncident = significantIncidentService.GetNatureOfIncident(Id, body);
         }
 
         public string Date

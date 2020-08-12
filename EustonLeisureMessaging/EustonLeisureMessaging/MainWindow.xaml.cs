@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 
 namespace EustonLeisureMessaging
 {
@@ -176,7 +175,7 @@ namespace EustonLeisureMessaging
                 lbl_TrendingSourceMessages.Visibility = Visibility.Visible;
                 lstView_TrendingSourceMessages.Visibility = Visibility.Visible;
                 
-                List<Tweet> sourceTweets = Tweets.FindAll(x => Regex.IsMatch(x.Body, @"\" + selectedHashtag.Key.ToString() + @"\b"));
+                List<Tweet> sourceTweets = Tweets.FindAll(x => Regex.IsMatch(x.Body, @"\" + selectedHashtag.Key.ToString() + @"\b", RegexOptions.IgnoreCase));
                 foreach (Tweet tweet in sourceTweets)
                 {
                     lstView_TrendingSourceMessages.Items.Add(tweet);

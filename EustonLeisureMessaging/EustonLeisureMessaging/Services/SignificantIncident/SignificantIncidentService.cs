@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace EustonLeisureMessaging.Services
 {
@@ -45,7 +42,7 @@ namespace EustonLeisureMessaging.Services
             else
             {
                 throw new Exception("Error in message " + id + ": Significant Incident Report does not specify a valid incident type."
-                                    + " Remember to separate message body with a commas e.g. \"Sport Centre Code: {code}, Nature of Incident: {type}, {message body}\"");
+                                    + " Remember to separate incident type and message body with a comma e.g. \"Sport Centre Code: {code} Nature of Incident: {type}, {message body}\"");
             }
         }
 
@@ -58,9 +55,14 @@ namespace EustonLeisureMessaging.Services
             }
             else
             {
-                throw new Exception("Error in message " + id + ": Significant Incident Report does not specify a valid Sport Centre Code."
-                                    + " Remember to separate message body with commas e.g. \"Sport Centre Code: {code}, Nature of Incident: {type}, {message body}\"");
+                throw new Exception("Error in message " + id + ": Significant Incident Report does not specify a valid Sport Centre Code.");
             }
+        }
+
+        public string GetMessageBody(string body)
+        {
+            string[] messageSections = body.Split(',');
+            return messageSections.Last();
         }
     }
 }
