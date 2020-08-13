@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EustonLeisureMessaging"
         mc:Ignorable="d"
-        Title="Euston Leisure Messaging" Height="500" Width="1000">
+        Title="Euston Leisure Messaging" Height="650" Width="1500">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,6 +26,9 @@
             <Border Margin="10" CornerRadius="10" BorderBrush="SkyBlue" Background="SkyBlue" BorderThickness="2" Width="90">
                 <Button BorderThickness="0" Background="Transparent" x:Name="btn_Send" Click="btn_Send_Click" Content="Send" Width="88" Height="Auto"/>
             </Border>
+            <Border Margin="20" CornerRadius="10" BorderBrush="Orange" Background="Orange" BorderThickness="2" Width="180">
+                <Button BorderThickness="0" Background="Transparent" x:Name="btn_Import" Content="Import Messages..." Width="88" Height="Auto" Click="btn_Import_Click"/>
+            </Border>
         </StackPanel>
 
         <TabControl Grid.Column="1" >
@@ -41,79 +44,94 @@
                         <!-- Emails -->
                         <StackPanel Grid.Column="0" Margin="10,10,10,10">
                             <Label Content="Emails" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
-                            <ListBox x:Name="lst_Emails" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Emails}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="3">
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="From:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Subject:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                                <TextBlock Text="{Binding Path=Subject}" />
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
-                                            </DockPanel>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <ListView x:Name="lst_Emails" Height="500" Width="350" Margin="0,10,0,0" ItemsSource="{Binding Emails}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="From" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Sender}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Subject" Width="80">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Subject}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Message" Width="160">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Body}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </StackPanel>
 
 
                         <!-- SMS Messages -->
                         <StackPanel  Grid.Column="1" Margin="10,10,10,10">
                             <Label Content="Texts" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
-                            <ListBox x:Name="lst_SMS" Height="370" Width="220" HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding SMSMessages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="3">
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Tel:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
-                                            </DockPanel>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <ListView x:Name="lst_SMS" Height="500" Width="350" Margin="0,10,0,0" ItemsSource="{Binding SMSMessages}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Tel" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Sender}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Message" Width="220">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Body}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </StackPanel>
 
                         <!-- Tweets -->
                         <StackPanel  Grid.Column="2" Margin="10,10,10,10">
                             <Label Content="Tweets" TextBlock.TextAlignment="Center"  HorizontalAlignment="Center"/>
-                            <ListBox x:Name="lst_Tweets" Height="370" Width="220"  HorizontalAlignment="Center" Margin="0,10,0,0" ItemsSource="{Binding Tweets}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="3">
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Twitter ID:" DockPanel.Dock="Left" Margin="5,0,10,0" />
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Sender}"/>
-                                            </DockPanel>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="Message:" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Body}" />
-                                            </DockPanel>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <ListView x:Name="lst_Tweets" Height="500" Width="350" Margin="0,10,0,0" ItemsSource="{Binding Tweets}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Twitter ID" Width="100">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Sender}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Message" Width="220">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=Body}" TextWrapping="Wrap" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </StackPanel>
                     </Grid>
                     
                     <!-- Significant Incident Reports -->
                     <StackPanel x:Name="stackPanel_SIR" Visibility="Hidden">
-                        <Label Content="Significant Incident Reports" HorizontalAlignment="Center" Width="740" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
-                        <ListView x:Name="lstView_SIRList" Height="170" Width="740" ItemsSource="{Binding SignificantIncidentReports}">
+                        <Label Content="Significant Incident Reports" HorizontalAlignment="Center" Width="1090" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
+                        <ListView x:Name="lstView_SIRList" Height="230" Width="1090" ItemsSource="{Binding SignificantIncidentReports}">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Id" Width="90">
+                                    <GridViewColumn Header="Id" Width="100">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Id}" TextWrapping="Wrap" />
@@ -127,28 +145,28 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="From" Width="125">
+                                    <GridViewColumn Header="From" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Sport Centre Code" Width="110">
+                                    <GridViewColumn Header="Sport Centre Code" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding SportCentreCode}" TextWrapping="Wrap" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Nature of Incident" Width="100">
+                                    <GridViewColumn Header="Nature of Incident" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding NatureOfIncident}" TextWrapping="Wrap" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Notes" Width="225">
+                                    <GridViewColumn Header="Notes" Width="400">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
@@ -173,13 +191,13 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Quarantined URLs"
-                            DisplayMemberBinding="{Binding Key}" Width="720" />
+                            DisplayMemberBinding="{Binding Key}" Width="1090" />
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <!-- URL Source Messages List -->
                     <StackPanel Grid.Row="1">
-                        <Label x:Name="lbl_URLSources" Content="URL Sources" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" Width="740" Visibility="Hidden"></Label>
+                        <Label x:Name="lbl_URLSources" Content="URL Sources" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="WhiteSmoke" Width="1150" Visibility="Hidden"></Label>
                         <ListView x:Name="lstView_URLSourceMessages" Visibility="Hidden">
                             <ListView.View>
                                 <GridView>
@@ -204,7 +222,7 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Body" Width="300">
+                                    <GridViewColumn Header="Body" Width="500">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
@@ -229,19 +247,19 @@
                     </Grid.ColumnDefinitions>
                     <!-- Trending List -->
                     <StackPanel Grid.Column="0" Grid.Row="0">
-                        <Label Content="Trending List" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
+                        <Label Content="Trending List" HorizontalAlignment="Center" Width="560" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
                         <ListView x:Name="lstView_TrendingList" ItemsSource="{Binding TrendingList}" SelectionChanged="lstView_TrendingList_SelectionChanged">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Hashtag"
-                                    DisplayMemberBinding="{Binding Key}" Width="250" />
+                                    DisplayMemberBinding="{Binding Key}" Width="350" />
                                     <GridViewColumn Header="Mentions"
-                                    DisplayMemberBinding="{Binding Value}" Width="100"/>
+                                    DisplayMemberBinding="{Binding Value}" Width="190"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
                         <!-- Trending Source Messages-->
-                        <Label x:Name="lbl_TrendingSourceMessages" Content="" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke" Visibility="Hidden"></Label>
+                        <Label x:Name="lbl_TrendingSourceMessages" Content="" HorizontalAlignment="Center" Width="560" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke" Visibility="Hidden"></Label>
                         <ListView x:Name="lstView_TrendingSourceMessages" Visibility="Hidden" ItemsSource="{Binding TrendingSourceMessages}">
                             <ListView.View>
                                 <GridView>
@@ -252,14 +270,14 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Message" Width="125">
+                                    <GridViewColumn Header="Message" Width="250">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="User" Width="125">
+                                    <GridViewColumn Header="User" Width="190">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />
@@ -272,7 +290,7 @@
                     </StackPanel>
                     <!-- Mentions List -->
                     <StackPanel Grid.Column="1" Grid.Row="0">
-                        <Label Content="Tweets Mentioning @EustonLeisure" HorizontalAlignment="Center" Width="365" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
+                        <Label Content="Tweets Mentioning @EustonLeisure" HorizontalAlignment="Center" Width="560" HorizontalContentAlignment="Center" BorderBrush="DarkGray" BorderThickness="1" Background="WhiteSmoke"></Label>
                         <ListView x:Name="lstView_MentionsList" ItemsSource="{Binding MentionsList}">
                             <ListView.View>
                                 <GridView>
@@ -283,14 +301,14 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Message" Width="125">
+                                    <GridViewColumn Header="Message" Width="250">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Body}" TextWrapping="Wrap" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="User" Width="125">
+                                    <GridViewColumn Header="User" Width="190">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Sender}" TextWrapping="Wrap" />

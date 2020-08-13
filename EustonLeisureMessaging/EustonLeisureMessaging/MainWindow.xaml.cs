@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Microsoft.Win32;
+using System.IO;
 
 namespace EustonLeisureMessaging
 {
@@ -192,11 +194,32 @@ namespace EustonLeisureMessaging
         {
             if (SignificantIncidentReports.Count > 0)
             {
-                lst_Emails.Height = 160;
-                lst_SMS.Height = 160;
-                lst_Tweets.Height = 160;
+                lst_Emails.Height = 250;
+                lst_SMS.Height = 250;
+                lst_Tweets.Height = 250;
 
                 stackPanel_SIR.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btn_Import_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {  
+                Title = "Browse Text Files",
+                DefaultExt = "txt",
+                Filter = "txt files (*.txt)|*.txt"
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string[] messages = File.ReadAllLines(openFileDialog.FileName);
+                foreach (string message in messages)
+                {
+                    string header = message.Substring(0, 10);
+                    string body = message.Substring(message.IndexOf(',') + 1, message.Length - 11);
+                    var newMessage = MessageFactory.CreateMessage(header, body, ValidationService.GetInstance());
+                    CategoriseMessage(newMessage);
+                }
             }
         }
     }
