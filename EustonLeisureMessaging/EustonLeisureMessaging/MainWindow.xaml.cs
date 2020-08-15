@@ -66,12 +66,9 @@ namespace EustonLeisureMessaging
             {
                 if (txt_MessageHeader.Text.Length > 0 && txt_MessageBody.Text.Length > 0)
                 {
-                    foreach (var message in MessagesAsJson)
+                    if (MessagesAsJson.Exists(x => x["Id"].ToString() == txt_MessageHeader.Text))
                     {
-                        if (message["Id"].ToString() == txt_MessageHeader.Text)
-                        {
-                            throw new Exception("This Message ID is already in use. Please enter a unique message ID.");
-                        }
+                        throw new Exception("This Message ID is already in use. Please enter a unique message ID.");
                     }
 
                     string messageHeader = txt_MessageHeader.Text;
@@ -204,6 +201,9 @@ namespace EustonLeisureMessaging
 
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
+            txtBlock_ImportError.Text = "";
+            scrollView_ImportError.Visibility = Visibility.Hidden;
+
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {  
                 Title = "Browse Text Files",
@@ -213,12 +213,30 @@ namespace EustonLeisureMessaging
             if (openFileDialog.ShowDialog() == true)
             {
                 string[] messages = File.ReadAllLines(openFileDialog.FileName);
+                txtBlock_ImportError.Text = "Some messages failed to import:";
                 foreach (string message in messages)
                 {
-                    string header = message.Substring(0, 10);
-                    string body = message.Substring(message.IndexOf(',') + 1, message.Length - 11);
-                    var newMessage = MessageFactory.CreateMessage(header, body, ValidationService.GetInstance());
-                    CategoriseMessage(newMessage);
+                    try
+                    {
+                        string header = message.Substring(0, 10);
+                        string body = message.Substring(message.IndexOf(',') + 1, message.Length - 11);
+                        var newMessage = MessageFactory.CreateMessage(header, body, ValidationService.GetInstance());
+                        if (!MessagesAsJson.Exists(x => x["Id"].ToString() == newMessage.Id))
+                        {
+                            CategoriseMessage(newMessage);
+                            MessagesAsJson.Add(newMessage.GetMessageAsJObject());
+                        }
+                        else
+                        {
+                            txtBlock_ImportError.Text += "\n" + newMessage.Id + " - this ID is already in use.";
+                            scrollView_ImportError.Visibility = Visibility.Visible;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        txtBlock_ImportError.Text += "\n---\n" + exception.Message + "\n---";
+                        scrollView_ImportError.Visibility = Visibility.Visible;
+                    }
                 }
             }
         }

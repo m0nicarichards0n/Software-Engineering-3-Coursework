@@ -36,17 +36,17 @@ namespace EustonLeisureMessaging.MessageTypes
                         }
                         else
                         {
-                            throw new Exception("Message ID is invalid - last 9 character must be numeric.");
+                            throw new Exception("Error in message " + value + ": Message ID is invalid - last 9 character must be numeric.");
                         }
                     }
                     else
                     {
-                        throw new Exception("Message ID is invalid - first character must refer to a valid message type.");
+                        throw new Exception("Error in message " + value + ": Message ID is invalid - first character must refer to a valid message type.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Message ID is invalid - ID must be 10 characters long.");
+                    throw new Exception("Error in message " + value + ": Message ID is invalid - ID must be 10 characters long.");
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace EustonLeisureMessaging.MessageTypes
                 }
                 else
                 {
-                    throw new Exception("Message body is invalid - SMS message must be between 1 and 140 characters long.");
+                    throw new Exception("Error in message " + Id + ": Message body is invalid - SMS message must be between 1 and 140 characters long.");
                 }
             }
         }
@@ -81,12 +81,12 @@ namespace EustonLeisureMessaging.MessageTypes
                     }
                     else
                     {
-                        throw new Exception("Telephone number is invalid - telephone number must be between 7 and 15 characters long.");
+                        throw new Exception("Error in message " + Id + ": Telephone number is invalid - telephone number must be between 7 and 15 characters long.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Telephone number is invalid - you must enter a valid numeric telephone number.");
+                    throw new Exception("Error in message " + Id + ": Telephone number is invalid - you must enter a valid numeric telephone number.");
                 }
             }
         }

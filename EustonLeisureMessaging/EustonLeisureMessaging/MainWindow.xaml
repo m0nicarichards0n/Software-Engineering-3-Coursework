@@ -29,6 +29,9 @@
             <Border Margin="20" CornerRadius="10" BorderBrush="Orange" Background="Orange" BorderThickness="2" Width="180">
                 <Button BorderThickness="0" Background="Transparent" x:Name="btn_Import" Content="Import Messages..." Width="88" Height="Auto" Click="btn_Import_Click"/>
             </Border>
+            <ScrollViewer x:Name="scrollView_ImportError" Width="300" Height="200" Visibility="Hidden">
+                <TextBlock x:Name="txtBlock_ImportError" Foreground="Red" Padding="0" TextWrapping="WrapWithOverflow"></TextBlock>
+            </ScrollViewer>
         </StackPanel>
 
         <TabControl Grid.Column="1" >

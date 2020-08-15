@@ -39,17 +39,17 @@ namespace EustonLeisureMessaging.MessageTypes
                         }
                         else
                         {
-                            throw new Exception("Message was assigned an invalid ID - last 9 character must be numeric.");
+                            throw new Exception("Error in message " + value + ": Message was assigned an invalid ID - last 9 character must be numeric.");
                         }
                     }
                     else
                     {
-                        throw new Exception("Message was assigned an invalid ID - first character must refer to a valid message type.");
+                        throw new Exception("Error in message " + value + ": Message was assigned an invalid ID - first character must refer to a valid message type.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Message was assigned an invalid ID - ID must be 10 characters long.");
+                    throw new Exception("Error in message " + value + ": Message was assigned an invalid ID - ID must be 10 characters long.");
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace EustonLeisureMessaging.MessageTypes
                 }
                 else
                 {
-                    throw new Exception("Message subject is invalid - Email subject must be between 1 and 20 characters long.");
+                    throw new Exception("Error in message " + Id + ": Message subject is invalid - Email subject must be between 1 and 20 characters long.");
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace EustonLeisureMessaging.MessageTypes
                 }
                 else
                 {
-                    throw new Exception("Message body is invalid - Email message must be between 1 and 1028 characters long.");
+                    throw new Exception("Error in message " + Id + ": Message body is invalid - Email message must be between 1 and 1028 characters long.");
                 }
             }
         }
@@ -97,7 +97,7 @@ namespace EustonLeisureMessaging.MessageTypes
                 }
                 else
                 {
-                    throw new Exception("Email address is invalid - please enter a valid email address.");
+                    throw new Exception("Error in message " + Id + ": Email address is invalid - please enter a valid email address.");
                 }
             }
         }
