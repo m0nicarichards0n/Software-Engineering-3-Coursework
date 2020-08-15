@@ -1,15 +1,17 @@
 ﻿using EustonLeisureMessaging.MessageTypes;
 using EustonLeisureMessaging.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Microsoft.Win32;
-using System.IO;
+using System.Windows.Forms;
 
 namespace EustonLeisureMessaging
 {
@@ -201,19 +203,19 @@ namespace EustonLeisureMessaging
 
         private void btn_Import_Click(object sender, RoutedEventArgs e)
         {
-            txtBlock_ImportError.Text = "";
-            scrollView_ImportError.Visibility = Visibility.Hidden;
+            txtBlock_ImportExportError.Text = "";
+            scrollView_ImportExportError.Visibility = Visibility.Hidden;
 
-            OpenFileDialog openFileDialog = new OpenFileDialog()
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog()
             {  
-                Title = "Browse Text Files",
+                Title = "Select A Text File",
                 DefaultExt = "txt",
                 Filter = "txt files (*.txt)|*.txt"
             };
             if (openFileDialog.ShowDialog() == true)
             {
                 string[] messages = File.ReadAllLines(openFileDialog.FileName);
-                txtBlock_ImportError.Text = "Some messages failed to import:";
+                txtBlock_ImportExportError.Text = "Some messages failed to import:\n";
                 foreach (string message in messages)
                 {
                     try
@@ -228,16 +230,49 @@ namespace EustonLeisureMessaging
                         }
                         else
                         {
-                            txtBlock_ImportError.Text += "\n" + newMessage.Id + " - this ID is already in use.";
-                            scrollView_ImportError.Visibility = Visibility.Visible;
+                            txtBlock_ImportExportError.Text += "\n" + newMessage.Id + " - this ID is already in use.";
+                            scrollView_ImportExportError.Visibility = Visibility.Visible;
                         }
                     }
                     catch (Exception exception)
                     {
-                        txtBlock_ImportError.Text += "\n---\n" + exception.Message + "\n---";
-                        scrollView_ImportError.Visibility = Visibility.Visible;
+                        txtBlock_ImportExportError.Text += "\n---\n" + exception.Message + "\n---";
+                        scrollView_ImportExportError.Visibility = Visibility.Visible;
                     }
                 }
+            }
+        }
+
+        private void btn_Export_Click(object sender, RoutedEventArgs e)
+        {
+            scrollView_ImportExportError.Visibility = Visibility.Hidden;
+            if (MessagesAsJson.Count > 0)
+            {
+                string selectedPath = "";
+                
+                FolderBrowserDialog folderDialog = new FolderBrowserDialog();
+                folderDialog.Description = "Select output folder...";
+                if (folderDialog.ShowDialog().ToString().Equals("OK"))
+                {
+                    selectedPath = folderDialog.SelectedPath;
+                }
+
+                using (StreamWriter file = File.CreateText(selectedPath + "\\ELM-Message-Export.json"))
+                {
+                    using (JsonTextWriter writer = new JsonTextWriter(file))
+                    {
+                        writer.Formatting = Formatting.Indented;
+                        JsonSerializer serializer = new JsonSerializer();
+                        serializer.Serialize(writer, MessagesAsJson);
+                    }
+                }
+
+                Process.Start(selectedPath + "\\ELM-Message-Export.json");
+            }
+            else
+            {
+                txtBlock_ImportExportError.Text = "No messages to export.";
+                scrollView_ImportExportError.Visibility = Visibility.Visible;
             }
         }
     }
