@@ -11,7 +11,7 @@ namespace EustonLeisureMessaging.Services
     public class ValidationService : IValidationService
     {
         private static ValidationService _instance;
-        private Regex messageSectionsRegex;
+        private Regex _messageSectionsRegex;
         
         public static ValidationService GetInstance()
         {
@@ -24,7 +24,7 @@ namespace EustonLeisureMessaging.Services
 
         private ValidationService()
         {
-            messageSectionsRegex = new Regex(@"\""(.*?)\""");
+            _messageSectionsRegex = new Regex(@"\""(.*?)\""");
         }
 
         public bool IsValidEncoding(string text)
@@ -41,7 +41,7 @@ namespace EustonLeisureMessaging.Services
 
         public string[] GetMessageSections(string messageBody)
         {
-            string[] messageSections = messageSectionsRegex.Matches(messageBody).Cast<Match>().Select(m => m.Value).Select(x => x.Trim('"')).ToArray();
+            string[] messageSections = _messageSectionsRegex.Matches(messageBody).Cast<Match>().Select(m => m.Value).Select(x => x.Trim('"')).ToArray();
             return messageSections;
         }
 

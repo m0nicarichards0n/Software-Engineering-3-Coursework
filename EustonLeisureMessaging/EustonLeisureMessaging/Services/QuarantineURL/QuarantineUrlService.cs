@@ -29,7 +29,7 @@ namespace EustonLeisureMessaging.Services
             return containsURLs;
         }
 
-        public string QuarantineURLs(string id, string message)
+        public string QuarantineUrls(string id, string message)
         {
             if (ContainsUrls(message))
             {

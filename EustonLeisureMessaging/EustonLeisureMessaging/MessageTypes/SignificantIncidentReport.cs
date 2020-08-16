@@ -17,7 +17,7 @@ namespace EustonLeisureMessaging.MessageTypes
             Id = id;
             Date = GetDate(subject);
             Subject = subject;
-            Body = significantIncidentService.GetMessageBody(quarantineUrlService.QuarantineURLs(Id, body));
+            Body = significantIncidentService.GetMessageBody(quarantineUrlService.QuarantineUrls(Id, body));
             Sender = sender;
             SportCentreCode = significantIncidentService.GetSportCentreCode(Id, body);
             NatureOfIncident = significantIncidentService.GetNatureOfIncident(Id, body);

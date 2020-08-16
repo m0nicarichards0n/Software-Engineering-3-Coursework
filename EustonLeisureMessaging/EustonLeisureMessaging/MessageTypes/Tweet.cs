@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EustonLeisureMessaging.MessageTypes
 {
-    public class Tweet : MessageUtilities, IMessage
+    public class Tweet : IMessage
     {
         private string _id;
         private string _body;

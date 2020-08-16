@@ -20,14 +20,14 @@ namespace EustonLeisureMessaging
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Email> Emails;
-        private List<SignificantIncidentReport> SignificantIncidentReports;
-        private List<Tweet> Tweets;
-        private List<SMS> SMSMessages;
-        private List<JObject> MessagesAsJson;
-        private IDictionary<string, string> QuarantinedUrls;
-        private IDictionary<string, int> TrendingList;
-        private List<Tweet> MentionsList;
+        private List<Email> _emails;
+        private List<SignificantIncidentReport> _significantIncidentReports;
+        private List<Tweet> _tweets;
+        private List<SMS> _smsMessages;
+        private List<JObject> _messagesAsJson;
+        private IDictionary<string, string> _quarantinedUrls;
+        private IDictionary<string, int> _trendingList;
+        private List<Tweet> _mentionsList;
         private IQuarantineUrlService _quarantinedUrlService = QuarantineUrlService.GetInstance();
         private IHashtagMonitoringService _hashtagMonitoringService = HashtagMonitoringService.GetInstance();
         private IMentionMonitoringService _mentionMonitoringService = MentionMonitoringService.GetInstance();
@@ -35,25 +35,25 @@ namespace EustonLeisureMessaging
 
         public MainWindow()
         {
-            QuarantinedUrls = _quarantinedUrlService.GetQuarantinedUrls();
-            TrendingList = _hashtagMonitoringService.GetTrendingList();
+            _quarantinedUrls = _quarantinedUrlService.GetQuarantinedUrls();
+            _trendingList = _hashtagMonitoringService.GetTrendingList();
             
             InitializeComponent();
             
-            Emails = new List<Email>();
-            SignificantIncidentReports = new List<SignificantIncidentReport>();
-            Tweets = new List<Tweet>();
-            SMSMessages = new List<SMS>();
-            MessagesAsJson = new List<JObject>();
-            MentionsList = new List<Tweet>();
+            _emails = new List<Email>();
+            _significantIncidentReports = new List<SignificantIncidentReport>();
+            _tweets = new List<Tweet>();
+            _smsMessages = new List<SMS>();
+            _messagesAsJson = new List<JObject>();
+            _mentionsList = new List<Tweet>();
 
-            lst_Emails.ItemsSource = Emails;
-            lst_Tweets.ItemsSource = Tweets;
-            lst_SMS.ItemsSource = SMSMessages;
-            lstView_URLQuarantine.ItemsSource = QuarantinedUrls;
-            lstView_TrendingList.ItemsSource = TrendingList;
-            lstView_MentionsList.ItemsSource = MentionsList;
-            lstView_SIRList.ItemsSource = SignificantIncidentReports;
+            lst_Emails.ItemsSource = _emails;
+            lst_Tweets.ItemsSource = _tweets;
+            lst_SMS.ItemsSource = _smsMessages;
+            lstView_URLQuarantine.ItemsSource = _quarantinedUrls;
+            lstView_TrendingList.ItemsSource = _trendingList;
+            lstView_MentionsList.ItemsSource = _mentionsList;
+            lstView_SIRList.ItemsSource = _significantIncidentReports;
 
             CollectionView trendingListView = (CollectionView)CollectionViewSource.GetDefaultView(lstView_TrendingList.ItemsSource);
             trendingListView.SortDescriptions.Add(new SortDescription("Value", ListSortDirection.Descending));
@@ -68,7 +68,7 @@ namespace EustonLeisureMessaging
             {
                 if (txt_MessageHeader.Text.Length > 0 && txt_MessageBody.Text.Length > 0)
                 {
-                    if (MessagesAsJson.Exists(x => x["Id"].ToString() == txt_MessageHeader.Text))
+                    if (_messagesAsJson.Exists(x => x["Id"].ToString() == txt_MessageHeader.Text))
                     {
                         throw new Exception("This Message ID is already in use. Please enter a unique message ID.");
                     }
@@ -77,7 +77,7 @@ namespace EustonLeisureMessaging
                     string messageBody = txt_MessageBody.Text;
 
                     var newMessage = MessageFactory.CreateMessage(messageHeader, messageBody, ValidationService.GetInstance());
-                    MessagesAsJson.Add(newMessage.GetMessageAsJObject());
+                    _messagesAsJson.Add(newMessage.GetMessageAsJObject());
 
                     CategoriseMessage(newMessage);
                 }
@@ -98,19 +98,19 @@ namespace EustonLeisureMessaging
             Type messageType = message.GetType();
             if (messageType == typeof(Email))
             {
-                Emails.Add((Email)message);
+                _emails.Add((Email)message);
                 lst_Emails.Items.Refresh();
                 lstView_URLQuarantine.Items.Refresh();
             }
             else if (messageType == typeof(SignificantIncidentReport))
             {
-                SignificantIncidentReports.Add((SignificantIncidentReport)message);
+                _significantIncidentReports.Add((SignificantIncidentReport)message);
                 lstView_SIRList.Items.Refresh();
                 DisplaySignificantIncidents();
             }
             else if (messageType == typeof(Tweet))
             {
-                Tweets.Add((Tweet)message);
+                _tweets.Add((Tweet)message);
                 lst_Tweets.Items.Refresh();
 
                 lstView_TrendingList.Items.Refresh();
@@ -119,13 +119,13 @@ namespace EustonLeisureMessaging
 
                 if (_mentionMonitoringService.ContainsMention(_username, message.Body))
                 {
-                    MentionsList.Add((Tweet)message);
+                    _mentionsList.Add((Tweet)message);
                 }
                 lstView_MentionsList.Items.Refresh();
             }
             else if (messageType == typeof(SMS))
             {
-                SMSMessages.Add((SMS)message);
+                _smsMessages.Add((SMS)message);
                 lst_SMS.Items.Refresh();
             }
         }
@@ -144,10 +144,10 @@ namespace EustonLeisureMessaging
 
                 for (int i = 0; i < messageSourceIds.Length; i++)
                 {
-                    Email sourceEmail = Emails.Find(x => x.Id == messageSourceIds[i]);
+                    Email sourceEmail = _emails.Find(x => x.Id == messageSourceIds[i]);
                     if (sourceEmail == null)
                     {
-                        SignificantIncidentReport sourceSIR = SignificantIncidentReports.Find(x => x.Id == messageSourceIds[i]);
+                        SignificantIncidentReport sourceSIR = _significantIncidentReports.Find(x => x.Id == messageSourceIds[i]);
                         lstView_URLSourceMessages.Items.Add(sourceSIR);
                     }
                     else
@@ -176,7 +176,7 @@ namespace EustonLeisureMessaging
                 lbl_TrendingSourceMessages.Visibility = Visibility.Visible;
                 lstView_TrendingSourceMessages.Visibility = Visibility.Visible;
                 
-                List<Tweet> sourceTweets = Tweets.FindAll(x => Regex.IsMatch(x.Body, @"\" + selectedHashtag.Key.ToString() + @"\b", RegexOptions.IgnoreCase));
+                List<Tweet> sourceTweets = _tweets.FindAll(x => Regex.IsMatch(x.Body, @"\" + selectedHashtag.Key.ToString() + @"\b", RegexOptions.IgnoreCase));
                 foreach (Tweet tweet in sourceTweets)
                 {
                     lstView_TrendingSourceMessages.Items.Add(tweet);
@@ -191,7 +191,7 @@ namespace EustonLeisureMessaging
         
         public void DisplaySignificantIncidents()
         {
-            if (SignificantIncidentReports.Count > 0)
+            if (_significantIncidentReports.Count > 0)
             {
                 lst_Emails.Height = 250;
                 lst_SMS.Height = 250;
@@ -223,10 +223,10 @@ namespace EustonLeisureMessaging
                         string header = message.Substring(0, 10);
                         string body = message.Substring(message.IndexOf(',') + 1, message.Length - 11);
                         var newMessage = MessageFactory.CreateMessage(header, body, ValidationService.GetInstance());
-                        if (!MessagesAsJson.Exists(x => x["Id"].ToString() == newMessage.Id))
+                        if (!_messagesAsJson.Exists(x => x["Id"].ToString() == newMessage.Id))
                         {
                             CategoriseMessage(newMessage);
-                            MessagesAsJson.Add(newMessage.GetMessageAsJObject());
+                            _messagesAsJson.Add(newMessage.GetMessageAsJObject());
                         }
                         else
                         {
@@ -246,7 +246,7 @@ namespace EustonLeisureMessaging
         private void btn_Export_Click(object sender, RoutedEventArgs e)
         {
             scrollView_ImportExportError.Visibility = Visibility.Hidden;
-            if (MessagesAsJson.Count > 0)
+            if (_messagesAsJson.Count > 0)
             {
                 string selectedPath = "";
                 
@@ -257,17 +257,20 @@ namespace EustonLeisureMessaging
                     selectedPath = folderDialog.SelectedPath;
                 }
 
-                using (StreamWriter file = File.CreateText(selectedPath + "\\ELM-Message-Export.json"))
+                if (selectedPath != "")
                 {
-                    using (JsonTextWriter writer = new JsonTextWriter(file))
+                    using (StreamWriter file = File.CreateText(selectedPath + "\\ELM-Message-Export.json"))
                     {
-                        writer.Formatting = Formatting.Indented;
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(writer, MessagesAsJson);
+                        using (JsonTextWriter writer = new JsonTextWriter(file))
+                        {
+                            writer.Formatting = Formatting.Indented;
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(writer, _messagesAsJson);
+                        }
                     }
-                }
 
-                Process.Start(selectedPath + "\\ELM-Message-Export.json");
+                    Process.Start(selectedPath + "\\ELM-Message-Export.json");
+                }
             }
             else
             {

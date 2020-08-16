@@ -6,7 +6,7 @@ using System.Net.Mail;
 
 namespace EustonLeisureMessaging.MessageTypes
 {
-    public class Email : MessageUtilities, IMessage
+    public class Email : IMessage
     {
         private string _id;
         private string _subject;
@@ -17,7 +17,7 @@ namespace EustonLeisureMessaging.MessageTypes
         {
             Id = id;
             Subject = subject;
-            Body = quarantineUrlService.QuarantineURLs(Id, body);
+            Body = quarantineUrlService.QuarantineUrls(Id, body);
             Sender = sender;
         }
         public string Id

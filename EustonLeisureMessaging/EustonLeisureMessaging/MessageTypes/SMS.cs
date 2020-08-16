@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EustonLeisureMessaging.MessageTypes
 {
-    public class SMS : MessageUtilities, IMessage
+    public class SMS : IMessage
     {
         private string _id;
         private string _body;
