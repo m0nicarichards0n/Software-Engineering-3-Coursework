@@ -222,15 +222,15 @@ namespace EustonLeisureMessaging
                     {
                         string header = message.Substring(0, 10);
                         string body = message.Substring(message.IndexOf(',') + 1, message.Length - 11);
-                        var newMessage = MessageFactory.CreateMessage(header, body, ValidationService.GetInstance());
-                        if (!_messagesAsJson.Exists(x => x["Id"].ToString() == newMessage.Id))
+                        if (!_messagesAsJson.Exists(x => x["Id"].ToString() == header))
                         {
+                            var newMessage = MessageFactory.CreateMessage(header, body, ValidationService.GetInstance());
                             CategoriseMessage(newMessage);
                             _messagesAsJson.Add(newMessage.GetMessageAsJObject());
                         }
                         else
                         {
-                            txtBlock_ImportExportError.Text += "\n" + newMessage.Id + " - this ID is already in use.";
+                            txtBlock_ImportExportError.Text += "\n" + header + " - this ID is already in use.";
                             scrollView_ImportExportError.Visibility = Visibility.Visible;
                         }
                     }
