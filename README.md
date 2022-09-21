@@ -1,4 +1,4 @@
-# SE3_ELM_40338729
+# Euston Leisure Messaging System
 Coursework for SET09402 Software Engineering 3
 
 This is the coursework I submitted for my third year Software Engineering module - I received a grade (with merit) of 80.5%
